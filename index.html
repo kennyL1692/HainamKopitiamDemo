@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hainam Kopitiam - Order Demo</title>
+<style>
+:root{--teal:#0f6b6b;--teal2:#0a4f4f;--cream:#fbf3e0;--red:#c8372d;--ink:#2a2118;--mut:#8a7b66;--card:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:#d9d2c3;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center}
+#phone{width:390px;height:780px;max-height:100vh;background:var(--cream);border-radius:34px;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3),0 0 0 10px #1c1c1c;display:flex;flex-direction:column}
+@media (max-width:480px){body{background:var(--cream)}#phone{width:100vw;height:100vh;height:100dvh;max-height:none;border-radius:0;box-shadow:none}}
+#bar{background:var(--ink);color:#fff;font-size:11px;display:flex;justify-content:space-between;align-items:center;padding:6px 14px;flex:none}
+#bar button{background:transparent;border:1px solid #fff6;color:#fff;border-radius:99px;font-size:11px;padding:2px 10px;cursor:pointer}
+#view{flex:1;overflow:auto;position:relative}
+.scr{min-height:100%;display:flex;flex-direction:column;animation:in .3s ease}
+@keyframes in{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.btn{background:var(--red);color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;width:100%;cursor:pointer;box-shadow:0 4px 0 #922117}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #922117}
+.btn.teal{background:var(--teal);box-shadow:0 4px 0 var(--teal2)}
+.pad{padding:18px}
+h1{font-size:24px;margin:0 0 4px}
+.sub{color:var(--mut);font-size:14px;margin:0 0 14px}
+/* scan */
+.cam{flex:1;background:radial-gradient(circle at 50% 40%,#2c3b3b,#0b1212);position:relative;display:flex;align-items:center;justify-content:center;color:#fff;flex-direction:column;gap:18px;padding:20px;text-align:center}
+.frame{width:210px;height:210px;position:relative;border-radius:18px}
+.frame i{position:absolute;width:38px;height:38px;border:4px solid #fff;transition:.3s}
+.frame i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0;border-radius:14px 0 0 0}
+.frame i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0;border-radius:0 14px 0 0}
+.frame i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0;border-radius:0 0 0 14px}
+.frame i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0;border-radius:0 0 14px 0}
+.frame.ok i{border-color:#3ddc97}
+.qr{position:absolute;inset:34px;background:conic-gradient(#fff 25%,#000 0 50%,#fff 0 75%,#000 0);background-size:22px 22px;opacity:.85;border-radius:6px}
+.line{position:absolute;left:8px;right:8px;height:3px;background:#3ddc97;box-shadow:0 0 14px #3ddc97;animation:scan 1.6s ease-in-out infinite alternate}
+@keyframes scan{from{top:10px}to{top:195px}}
+.frame.ok .line{display:none}
+/* logo */
+.logo{width:76px;height:76px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:38px;margin:30px auto 10px;box-shadow:0 0 0 6px var(--cream),0 0 0 9px var(--teal)}
+input.f{width:100%;border:2px solid #e6dbc3;border-radius:12px;padding:14px;font-size:16px;margin:6px 0;background:#fff;color:var(--ink)}
+input.f:focus{outline:0;border-color:var(--teal)}
+/* menu */
+.hd{background:var(--teal);color:#fff;padding:14px 16px 12px;position:sticky;top:0;z-index:5}
+.hd small{opacity:.8}
+.tabs{display:flex;gap:8px;overflow:auto;padding:10px 14px;background:var(--cream);position:sticky;top:62px;z-index:4}
+.tab{flex:none;padding:7px 14px;border-radius:99px;background:#fff;border:1px solid #e6dbc3;font-size:14px;cursor:pointer}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.item{display:flex;gap:12px;background:var(--card);border-radius:16px;padding:12px;margin:0 14px 10px;box-shadow:0 1px 3px #0001;align-items:center}
+.pic{width:64px;height:64px;border-radius:14px;display:grid;place-items:center;font-size:34px;flex:none}
+.item b{display:block}.item span{color:var(--mut);font-size:12px}
+.price{color:var(--red);font-weight:700;margin-top:2px}
+.add{margin-left:auto;width:36px;height:36px;border-radius:50%;border:0;background:var(--teal);color:#fff;font-size:22px;cursor:pointer;flex:none}
+.add:active{transform:scale(.9)}
+.cartbar{position:sticky;bottom:0;padding:12px 14px;background:linear-gradient(transparent,var(--cream) 30%)}
+.cartbar .btn{display:flex;justify-content:space-between;align-items:center}
+.qty{display:flex;align-items:center;gap:10px;margin-left:auto}
+.qty button{width:30px;height:30px;border-radius:50%;border:1px solid #d9ccb0;background:#fff;font-size:18px;cursor:pointer}
+.row{display:flex;justify-content:space-between;padding:6px 0}
+.tot{font-size:20px;font-weight:800;border-top:2px dashed #d9ccb0;margin-top:8px;padding-top:12px}
+.back{background:none;border:0;color:#fff;font-size:15px;cursor:pointer;padding:0 8px 0 0}
+/* pay */
+.wallet{display:flex;gap:10px;margin:8px 0}
+.wallet div{flex:1;text-align:center;border:2px solid #e6dbc3;border-radius:12px;padding:12px 4px;font-size:13px;background:#fff;cursor:pointer}
+.wallet div.on{border-color:var(--teal);background:#e6f3f2;font-weight:700}
+.spin{width:54px;height:54px;border:6px solid #fff4;border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ov{position:absolute;inset:0;background:var(--teal);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:20;font-size:18px;font-weight:700}
+.tick{font-size:70px;animation:pop .4s ease}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+/* track */
+.eta{background:var(--teal);color:#fff;text-align:center;padding:22px 16px 26px;border-radius:0 0 28px 28px}
+.eta .big{font-size:54px;font-weight:800;line-height:1}
+.hero{font-size:64px;height:78px;position:relative}
+.steam span{position:absolute;font-size:22px;opacity:0;animation:rise 2s infinite}
+@keyframes rise{0%{transform:translateY(20px);opacity:0}40%{opacity:.8}100%{transform:translateY(-30px);opacity:0}}
+.stp{display:flex;gap:14px;padding:10px 0;opacity:.35;transition:.4s}
+.stp.on,.stp.done{opacity:1}
+.dot{width:34px;height:34px;border-radius:50%;background:#e6dbc3;display:grid;place-items:center;flex:none;position:relative}
+.stp.done .dot{background:#3ddc97}.stp.on .dot{background:var(--red);color:#fff;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px #c8372d33}}
+.stp:not(:last-child) .dot:after{content:"";position:absolute;top:36px;left:15px;width:3px;height:22px;background:#e6dbc3}
+.stp.done:not(:last-child) .dot:after{background:#3ddc97}
+.ticket{border:2px dashed #d9ccb0;border-radius:14px;padding:12px 14px;background:#fff;font-size:14px;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="phone">
+  <div id="bar"><span>DEMO &middot; Sample data only</span><button onclick="restart()">Restart demo</button></div>
+  <div id="view"></div>
+</div>
+<script>
+var MENU=[
+{id:1,c:"Drinks",n:"Kopi O",d:"Strong black coffee, kopitiam style",p:2.2,e:"☕",bg:"#f3e0c4"},
+{id:2,c:"Drinks",n:"Kopi C",d:"With evaporated milk",p:2.6,e:"☕",bg:"#f0d9bd"},
+{id:3,c:"Drinks",n:"Teh Tarik",d:"Pulled milk tea, frothy",p:2.8,e:"🫖",bg:"#f7e3c0"},
+{id:4,c:"Breakfast",n:"Kaya Toast Set",d:"Toast, kaya, butter, 2 eggs, kopi",p:6.5,e:"🍞",bg:"#fbe7b3"},
+{id:5,c:"Breakfast",n:"Half-Boiled Eggs",d:"Two eggs, soy sauce, white pepper",p:3.5,e:"🥚",bg:"#fff0c9"},
+{id:6,c:"Rice",n:"Hainanese Chicken Rice",d:"Poached chicken, fragrant rice, chilli",p:9.8,e:"🍗",bg:"#ffe2c7"},
+{id:7,c:"Rice",n:"Nasi Lemak",d:"Coconut rice, sambal, egg, anchovies",p:7.5,e:"🍛",bg:"#ffd9d0"},
+{id:8,c:"Mains",n:"Hainanese Chicken Chop",d:"Crispy chop, gravy, fries, peas",p:14.9,e:"🍽️",bg:"#e7dcc8"}
+];
+var CATS=["Drinks","Breakfast","Rice","Mains"];
+var S;
+function reset(){S={scr:"scan",name:"Guest",cart:{},cat:"Drinks",note:"",pay:"TNG eWallet"};}
+reset();
+var V=document.getElementById("view"),timers=[];
+function clr(){timers.forEach(clearInterval);timers.forEach(clearTimeout);timers=[];}
+function go(s){clr();S.scr=s;render();V.scrollTop=0;}
+function restart(){clr();reset();render();}
+function rm(n){return "RM "+n.toFixed(2);}
+function count(){var n=0;for(var k in S.cart)n+=S.cart[k];return n;}
+function total(){var t=0;MENU.forEach(function(m){t+=(S.cart[m.id]||0)*m.p});return t;}
+function render(){
+ var f={scan:scan,login:login,menu:menu,cart:cart,pay:pay,track:track}[S.scr];f();
+}
+function scan(){
+ V.innerHTML='<div class="scr"><div class="cam"><div style="font-size:20px;font-weight:700">Hainam Kopitiam</div><div class="frame" id="fr"><i></i><i></i><i></i><i></i><div class="qr"></div><div class="line"></div></div><div id="st" style="opacity:.85">Point your camera at the QR code on your table</div><button class="btn" style="max-width:280px" id="sb">Tap to simulate scan</button></div></div>';
+ document.getElementById("sb").onclick=function(){
+  document.getElementById("fr").className="frame ok";
+  document.getElementById("st").innerHTML="✅ <b>Table 12</b> detected";
+  this.style.display="none";
+  timers.push(setTimeout(function(){go("login")},900));
+ };
+}
+function login(){
+ V.innerHTML='<div class="scr pad"><div class="logo">☕</div><h1 style="text-align:center">Welcome to Hainam Kopitiam</h1><p class="sub" style="text-align:center">Table 12 &middot; Sit back, we will bring it to you</p><input class="f" id="nm" placeholder="Your name" autocomplete="off"><input class="f" id="ph" placeholder="Phone (e.g. 012-345 6789)" inputmode="tel" autocomplete="off"><p class="sub" style="font-size:12px">Demo: any input works. You can also leave it blank.</p><div style="margin-top:auto"><button class="btn" id="go">Start ordering</button></div></div>';
+ document.getElementById("go").onclick=function(){S.name=document.getElementById("nm").value.trim()||"Guest";go("menu");};
+}
+function menu(){
+ var h='<div class="scr"><div class="hd"><small>Table 12</small><div style="font-weight:700;font-size:18px">Hi '+esc(S.name)+', what would you like?</div></div><div class="tabs">';
+ CATS.forEach(function(c){h+='<div class="tab'+(c==S.cat?" on":"")+'" data-c="'+c+'">'+c+'</div>'});
+ h+='</div><div style="padding-top:2px;flex:1">';
+ MENU.filter(function(m){return m.c==S.cat}).forEach(function(m){
+  h+='<div class="item"><div class="pic" style="background:'+m.bg+'">'+m.e+'</div><div><b>'+m.n+'</b><span>'+m.d+'</span><div class="price">'+rm(m.p)+'</div></div><button class="add" data-a="'+m.id+'">+</button></div>';
+ });
+ h+='</div>';
+ if(count())h+='<div class="cartbar"><button class="btn" id="vc"><span>🛒 View cart ('+count()+')</span><span>'+rm(total())+'</span></button></div>';
+ h+='</div>';
+ V.innerHTML=h;
+ V.querySelectorAll(".tab").forEach(function(t){t.onclick=function(){S.cat=t.dataset.c;var y=V.scrollTop;menu();V.scrollTop=y;}});
+ V.querySelectorAll(".add").forEach(function(b){b.onclick=function(){var i=b.dataset.a;S.cart[i]=(S.cart[i]||0)+1;var y=V.scrollTop;menu();V.scrollTop=y;}});
+ var vc=document.getElementById("vc");if(vc)vc.onclick=function(){go("cart")};
+}
+function cart(){
+ var h='<div class="scr"><div class="hd"><button class="back" id="bk">‹ Menu</button><b>Your order</b></div><div style="padding:14px;flex:1">';
+ var any=false;
+ MENU.forEach(function(m){var q=S.cart[m.id];if(!q)return;any=true;
+  h+='<div class="item" style="margin:0 0 10px"><div class="pic" style="background:'+m.bg+';width:48px;height:48px;font-size:26px">'+m.e+'</div><div><b>'+m.n+'</b><div class="price">'+rm(m.p*q)+'</div></div><div class="qty"><button data-m="'+m.id+'">−</button><b>'+q+'</b><button data-p="'+m.id+'">+</button></div></div>';});
+ if(!any){h+='<p class="sub" style="text-align:center;margin-top:60px">Your cart is empty.<br>Go back and add something tasty.</p>';}
+ else{
+  h+='<input class="f" id="nt" placeholder="Notes, e.g. kurang manis, no ice" value="'+esc(S.note)+'">';
+  var t=total(),sv=t*0.06;
+  h+='<div style="margin-top:10px"><div class="row"><span>Subtotal</span><span>'+rm(t)+'</span></div><div class="row"><span>Service charge (6%)</span><span>'+rm(sv)+'</span></div><div class="row tot"><span>Total</span><span>'+rm(t+sv)+'</span></div></div>';
+ }
+ h+='</div>';
+ if(any)h+='<div class="cartbar"><button class="btn" id="chk">Continue to pay</button></div>';
+ h+='</div>';
+ V.innerHTML=h;
+ document.getElementById("bk").onclick=function(){go("menu")};
+ V.querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){var i=b.dataset.m;S.cart[i]--;if(!S.cart[i])delete S.cart[i];keep();cart();}});
+ V.querySelectorAll("[data-p]").forEach(function(b){b.onclick=function(){S.cart[b.dataset.p]++;keep();cart();}});
+ var nt=document.getElementById("nt");if(nt)nt.oninput=function(){S.note=nt.value};
+ var c=document.getElementById("chk");if(c)c.onclick=function(){go("pay")};
+}
+function keep(){}
+function pay(){
+ var t=total()*1.06;
+ V.innerHTML='<div class="scr"><div class="hd"><button class="back" id="bk">‹ Cart</button><b>Payment</b></div><div class="pad" style="flex:1"><div style="text-align:center;margin:10px 0 18px"><div class="sub" style="margin:0">Amount to pay</div><div style="font-size:42px;font-weight:800">'+rm(t)+'</div></div><b>Pay with</b><div class="wallet"><div class="on">TNG eWallet</div><div>GrabPay</div><div>DuitNow QR</div></div><p class="sub" style="font-size:12px">Demo: no real payment is made.</p></div><div class="cartbar"><button class="btn teal" id="pn">Pay '+rm(t)+'</button></div></div>';
+ document.getElementById("bk").onclick=function(){go("cart")};
+ V.querySelectorAll(".wallet div").forEach(function(d){d.onclick=function(){V.querySelectorAll(".wallet div").forEach(function(x){x.className=""});d.className="on";S.pay=d.textContent;}});
+ document.getElementById("pn").onclick=function(){
+  var o=document.createElement("div");o.className="ov";o.innerHTML='<div class="spin"></div><div>Processing '+esc(S.pay)+'...</div>';V.appendChild(o);
+  timers.push(setTimeout(function(){o.innerHTML='<div class="tick">✅</div><div>Payment successful</div>';},1300));
+  timers.push(setTimeout(function(){go("track")},2400));
+ };
+}
+function track(){
+ var items="";MENU.forEach(function(m){if(S.cart[m.id])items+=S.cart[m.id]+"× "+m.n+"<br>";});
+ var steps=[["📥","Order received","The kitchen has your order"],["🔥","Cooking","Wok is hot, uncle is on it"],["🛵","On the way","Heading to Table 12"]];
+ V.innerHTML='<div class="scr"><div class="eta"><div style="opacity:.85;font-size:13px">Order #A'+(100+Math.floor(Math.random()*800))+' &middot; Table 12</div><div class="hero" id="hero">🍳<div class="steam" id="stm"></div></div><div class="big" id="eta">12:00</div><div style="opacity:.9" id="msg">Estimated time</div></div><div class="pad" id="stp"></div></div>';
+ var st=document.getElementById("stm");st.innerHTML='<span style="left:42%;animation-delay:0s">💨</span><span style="left:52%;animation-delay:.7s">💨</span><span style="left:47%;animation-delay:1.3s">💨</span>';
+ var cur=0,left=720,hero=document.getElementById("hero");
+ function draw(){
+  var h="";steps.forEach(function(s,i){h+='<div class="stp '+(i<cur?"done":i==cur?"on":"")+'"><div class="dot">'+(i<cur?"✓":s[0])+'</div><div><b>'+s[1]+'</b><div class="sub" style="margin:0;font-size:13px">'+s[2]+'</div></div></div>';});
+  h+='<div class="ticket"><b>Your order</b><br>'+items+'</div><p class="sub" style="font-size:12px;text-align:center;margin-top:12px">Demo: time is sped up for the audience.</p>';
+  document.getElementById("stp").innerHTML=h;
+ }
+ draw();
+ timers.push(setInterval(function(){
+  left=Math.max(0,left-30);
+  var m=Math.floor(left/60),s=left%60;
+  document.getElementById("eta").textContent=(m<10?"0":"")+m+":"+(s<10?"0":"")+s;
+  if(left<=480&&cur==0){cur=1;draw();}
+  if(left<=180&&cur==1){cur=2;draw();var hh=document.getElementById("hero");hh.firstChild.nodeValue="🛵";st.style.display="none";document.getElementById("msg").textContent="Almost there!";}
+  if(left<=0){clr();cur=3;draw();document.getElementById("hero").firstChild.nodeValue="🎉";document.getElementById("eta").textContent="Enjoy!";document.getElementById("msg").textContent="Your food has arrived at Table 12";}
+ },1000));
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]});}
+render();
+</script>
+</body>
+</html>
