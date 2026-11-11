@@ -4,4 +4,4 @@ Clickable demo of a mobile QR food-ordering app for a Hainanese kopitiam. Sample
 
 Open `index.html` in any browser (best on a phone-sized screen).
 
-Live demo: https://hainam-kopitiam-demo-1ozx.netlify.app
+Live demo: https://hainam-qrdemo-kenny.netlify.app
